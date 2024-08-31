@@ -1,0 +1,64 @@
+DROP database IF EXISTS ALTECH;
+CREATE DATABASE ALTECH;
+use ALTECH;
+
+CREATE table ORIGEN(
+id_origen int not null auto_increment,
+provincia varchar(20),
+direccion varchar(30),
+fecha_despacho datetime default (current_timestamp),
+PRIMARY KEY (id_origen)
+) comment 'INFORMACIÓN DE LUGAR DE ORIGEN DE MERCADERIA';
+
+CREATE table VEHICULO(
+id_vehiculo int not null auto_increment,
+marca varchar(20),
+modelo varchar(20),
+PRIMARY KEY (id_vehiculo)
+);
+
+CREATE table CONDUCTOR(
+id_conductor int not null auto_increment,
+edad int,
+genero varchar(10),
+id_vehiculo int,
+PRIMARY KEY (id_conductor)
+);
+
+CREATE table CLIENTE(
+id_cliente int not null auto_increment,
+cuit varchar(13),
+razon_social varchar(50),
+primary KEY (id_cliente)
+);
+
+CREATE table CONSUMO(
+tipo_de_combustible int not null auto_increment,
+cantidad_combustible int,
+id_vehiculo int,
+PRIMARY KEY (tipo_de_combustible)
+);
+
+CREATE table DESTINO(
+id_destino int not null auto_increment,
+id_dirección varchar(50),
+provincia varchar(20),
+id_cliente int,
+fecha_entrega datetime default (current_timestamp),
+PRIMARY KEY (id_destino)
+)COMMENT 'TODA LA INFORMACIÓN DEL DESTINO DE LA MERCADERÍA';
+-- ALTER
+ALTER TABLE CONSUMO
+ADD CONSTRAINT fk_consumo
+FOREIGN KEY (id_vehiculo) REFERENCES VEHICULO(id_vehiculo);
+
+ALTER TABLE DESTINO
+ADD CONSTRAINT fk_destino
+FOREIGN KEY (id_cliente) REFERENCES CLIENTE(id_cliente);
+
+ALTER TABLE CONDUCTOR
+ADD CONSTRAINT fk_conductor
+FOREIGN KEY (id_vehiculo) REFERENCES VEHICULO(id_vehiculo);
+
+
+
